@@ -1,6 +1,6 @@
-# Outage Root Cause Identification
+# ML-Based Outage Root Cause Identification
 
-**Service:** Outage Root Cause Identification  
+**Service:** ML-Based Outage Root Cause Identification  
 **Document Type:** Technical Manual & Service Specification  
 **Author:** Slovenian DSO Elektro Gorenjska d.d.  
 **Version:** 1.0  
@@ -265,3 +265,21 @@ The model and pipeline documentation will be included in the research report and
 ## Deployment Considerations
 
 No production deployment is planned at this stage. Code and documentation will support future integration with real-time SCADA streams once data access and operational requirements are resolved.
+
+---
+
+# 7. Current State
+
+The incident explorer is a read-only view of the episodes built by the three state-machine versions (v1.0, v1.1 and v2.0). Each version is shown on its own lane above the underlying SCADA points, together with IZPADI (actual unplanned outages) and IZKLOPI (announced work) references.
+
+### Figure 2: Known actual outage closed by control-confirmed restoration
+
+![Incident explorer: a breaker trip closed by control-confirmed restoration in v1.1](docs/261001-incident-explorer-control-confirmed-restoration.png)
+
+A breaker trip matches a recorded IZPAD. v1.1 closes the episode on exact-point control feedback less than three minutes after the trip, while v1.0 and v2.0 keep it open until the 60-minute limit.
+
+### Figure 3: Episode overlapping announced work
+
+![Incident explorer: a long protection episode overlapping an IZKLOPI window](docs/261001-incident-explorer-announced-work-overlap.png)
+
+A breaker trip followed by repeated protection activity across several points, inside an announced-work (IZKLOPI) window. All three versions group the activity into a single episode that ends at the breaker restoration; v2.0 closes slightly later because of its provisional recovery window.

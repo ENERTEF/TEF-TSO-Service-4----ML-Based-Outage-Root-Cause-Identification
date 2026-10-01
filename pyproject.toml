@@ -1,0 +1,37 @@
+[project]
+name = "tef-tso-service4"
+version = "0.1.0"
+description = "TEF-TSO Service 4 -- ML-Based Outage Root Cause Identification"
+requires-python = ">=3.12"
+dependencies = [
+    # What `src/service4/` actually imports. These were missing until 2026-08-28: the package was
+    # promoted out of `analysis/` while the dependency list still described a historical analysis
+    # script, and the workspace `.venv` masked it — every import resolved because some other member
+    # had pulled the wheel in. A standalone install of this package would have failed on pandas.
+    "networkx>=3.0",
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "pyarrow>=17.0",
+    "py7zr>=0.22",
+    "scipy>=1.14",
+    # Used by the reviewed event-partition evaluator for adjusted Rand index.
+    "scikit-learn>=1.9.0",
+]
+
+[project.optional-dependencies]
+viewer = [
+    "plotly>=5.0",
+    "streamlit>=1.63,<2",
+]
+
+[project.scripts]
+service4-build-v1 = "service4.artifacts:main"
+service4-build-v1-1 = "service4.artifacts_v1_1:main"
+service4-build-v2 = "service4.artifacts_v2:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/service4"]
